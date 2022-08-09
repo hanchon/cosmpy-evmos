@@ -1,5 +1,3 @@
-import base64
-
 from cosmpy.aerial.client import LedgerClient
 from cosmpy.aerial.client import NetworkConfig
 from cosmpy.aerial.wallet import Wallet as WalletInterface
@@ -35,10 +33,7 @@ class CosmpyWallet(WalletInterface):
         return Address(self.wallet.evmos_address, 'evmos')
 
     def public_key(self) -> PublicKey:
-        print(self.wallet.private_key)
-        print(base64.b64decode(self.wallet.private_key))
-
-        return self.wallet.public_key
+        return PublicKey(self.wallet.public_key)
 
     def signer(self) -> Signer:
 
@@ -62,32 +57,10 @@ class CosmpyWallet(WalletInterface):
         return MySigner(self.wallet)
 
     def create_proto_pub_key(self):
-        #         signer_info = SignerInfo()
-        #
         pub_key = PubKey()
         pub_key.key = self.wallet.public_key
         return pub_key
 
-
-#         public_key = Any()
-#         public_key.Pack(pub_key,type_url_prefix='/')
-#
-#         signer_info.public_key.CopyFrom(public_key)
-#
-#         a = ModeInfo()
-#         single = ModeInfo.Single()
-#         single.mode = SIGN_MODE_DIRECT
-#         a.single.CopyFrom(single)
-#         signer_info.mode_info.CopyFrom(a)
-#         signer_info.sequence = int(self.builder.sequence)
-#         return [signer_info]
-#         return [SignerInfo(
-#             public_key=public_key,
-#             mode_info=ModeInfo(
-#                 single=ModeInfo.Single(mode=SignMode.SIGN_MODE_DIRECT)
-#             ),
-#             sequence=sequence_num,
-#         )]
 
 if __name__ == '__main__':
     ledger_client = LedgerClient(evmos)
